@@ -1,1 +1,1 @@
-# test
+genre_list = ["blues", "classical", "country", "disco", "hiphop", "jazz", "metal", "pop", "reggae", "rock"]
