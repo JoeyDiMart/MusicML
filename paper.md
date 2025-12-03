@@ -3,6 +3,7 @@
 - This will solve the problem of not knowing what playlist you can add a song to by letting a neural network classify
 them by genre
 
+
 2. What data did you use? Did you collect the data yourself (if so how), or if not where did
 you acquire the data?
 - We're using the GTZAN dataset, which is a collection of 1000 songs with 100 songs of each genre
@@ -19,8 +20,15 @@ categorize tasks. Each input (X value) is a layer (in my case there are 58), the
 neurons. Finally, the last hidden layer feeds into an output layer and calculates the probability for each option, in our
 case there are 10 options for 10 genres. 
 
+
 4. What type of preprocessing (or cleaning) did you do on the data before training your
 model?
+- before officially training the model I first had to drop any columns not associated with the music itself. There were 
+two columns dropped, the 'labels' which had the actual genre and 'file_name' which was just "genre_00001" etc. I then
+set the  Y value to be the 10 different genre options, but I used sklearn's preprocessing library to transform the string
+values of the genres into numeric values 0-9. I used different scalars during training but finally decided to use sklearn's
+robust scalar which removes the median values and divides the data by the IQR (difference between 75th percentile and 25th
+percentile). This scalar allows for the median value to nto be affected by outliers and allow for more stable results.
 
 
 5. Provide an overview (either in English or pseudocode) of the algorithm that is used to
@@ -34,6 +42,14 @@ information, please reach out to the professor.
 6. What challenges did you encounter in doing this project? Was there trial and error
 required? What did you try that didn’t work very well? What did you need to
 tweak/adjust to improve your project’s performance?
+- the largest challenge was all the minor tweaking that had to be done to raise the accuracy score. Initially a neural 
+network of (100, 50) was the best possible with an accuracy score of 80%, which is nowhere near the target accuracy of 100.
+- Tweaking included trying different scalars (standard, minmax, and robust) as well as looping through and testing different
+neural network sizes, initially trying different numbers of layers of neurons, then just sticking to 2 hidden layers 
+with different sizes. 
+- Changing test/training size, alpha value in MLPClassifier, and number of layers did not prove to help performance at all
+- helpful changes included minor tweaking of how large the two hidden layers are, changing scalars, iterations, and
+learning rate.
 
 
 7. How successful was your proof of concept? (That is, evaluate the final system that you
