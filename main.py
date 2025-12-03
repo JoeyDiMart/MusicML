@@ -19,4 +19,12 @@ neural_sizes = [
     (120, 60, 30)
 ]
 
+### just for testing ###
+# print(songs.shape)  # printed (1000, 60)
+# print(songs.columns)  #included 60 columns with filenames and other song data
+#print(songs['label'].value_counts)  # the label is the column that has the actual genre (they're in order from blues to rock
+
+X = songs.drop(['filename', 'label'], axis=1)
+#print(X.columns)  # verifying the non essential music feature stuff is gone
+y = songs['label']  # this is 1 column of 1000 songs (100 of each genre)
 
