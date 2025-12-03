@@ -13,8 +13,11 @@ you acquire the data?
 of how this model works? (That is, what is this model doing? What are the parameters
 that define the model? How does it get an answer?) Feel free to include pictures if it
 helps you to explain the model.
-- 
-
+- For this project, we trained a neural network, specifically sklearn's MLPClassifier (Multi-layer Perceptron)
+- MLPClassifiers work by iteratively training the model and performing partial derivatives during each step in order to 
+categorize tasks. Each input (X value) is a layer (in my case there are 58), then hidden layers are defined to be the "middle"
+neurons. Finally, the last hidden layer feeds into an output layer and calculates the probability for each option, in our
+case there are 10 options for 10 genres. 
 
 4. What type of preprocessing (or cleaning) did you do on the data before training your
 model?
