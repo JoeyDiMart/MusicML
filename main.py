@@ -6,7 +6,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
-import librosa
+import librosa  # library for video and audio analysis
 import numpy as np
 
 from sklearn.preprocessing import MinMaxScaler, RobustScaler # for testing
@@ -28,7 +28,6 @@ neural_sizes = [
     (100, 50, 25),
     (120, 60, 30),
 ]
-'''
 
 # the best accuracy was 80% with (100, 50) so looking to fine tune this
 neural_sizes = [
@@ -47,6 +46,10 @@ neural_sizes = [
     (200, 100, 50),
     (128, 64),
     (100, 53, 50, 20, 10, 50, 100, 50)
+]
+'''
+neural_sizes = [
+    (100, 50)  # kept this neural network size as a list just to keep the code relatively the same and able to test later
 ]
 
 ### just for testing ###
@@ -73,8 +76,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 # s is the standard deviation
 #scaler = MinMaxScaler()
 scaler = RobustScaler()
-
-
 
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
@@ -106,6 +107,83 @@ for size in neural_sizes:
         'model': mlp
     })
 
+model = max(results, key=lambda x: x['accuracy'])['model']  # make sure the model used is the most accurate (if testing multiple)
+
+
+######## Below here is where we handle taking a .wav file and predicting the genre ########
+audio_path = input("enter the audio file name (make sure it's in the same directory): ")
+
+y, sr = librosa.load(audio_path, duration=30)  # duration 30 for a 30 second clip max
+
+features = {}  # librosa will take the .wav file and extract all useful components of it (below)
+# these features also match the "features_30_sec.csv" file
+
+features['length'] = len(y)
+
+# 1. Chroma STFT
+chroma_stft = librosa.feature.chroma_stft(y=y, sr=sr)
+features['chroma_stft_mean'] = np.mean(chroma_stft)
+features['chroma_stft_var'] = np.var(chroma_stft)
+
+# 2. RMS (Root Mean Square Energy)
+rms = librosa.feature.rms(y=y)
+features['rms_mean'] = np.mean(rms)
+features['rms_var'] = np.var(rms)
+
+# 3. Spectral Centroid
+spectral_centroid = librosa.feature.spectral_centroid(y=y, sr=sr)
+features['spectral_centroid_mean'] = np.mean(spectral_centroid)
+features['spectral_centroid_var'] = np.var(spectral_centroid)
+
+# 4. Spectral Bandwidth
+spectral_bandwidth = librosa.feature.spectral_bandwidth(y=y, sr=sr)
+features['spectral_bandwidth_mean'] = np.mean(spectral_bandwidth)
+features['spectral_bandwidth_var'] = np.var(spectral_bandwidth)
+
+# 5. Spectral Rolloff
+rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+features['rolloff_mean'] = np.mean(rolloff)
+features['rolloff_var'] = np.var(rolloff)
+
+# 6. Zero Crossing Rate
+zero_crossing_rate = librosa.feature.zero_crossing_rate(y)
+features['zero_crossing_rate_mean'] = np.mean(zero_crossing_rate)
+features['zero_crossing_rate_var'] = np.var(zero_crossing_rate)
+
+# 7. Harmony and Perceptr (Percussive)
+harmony, perceptr = librosa.effects.hpss(y)
+features['harmony_mean'] = np.mean(harmony)
+features['harmony_var'] = np.var(harmony)
+features['perceptr_mean'] = np.mean(perceptr)
+features['perceptr_var'] = np.var(perceptr)
+
+# 8. Tempo
+tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
+features['tempo'] = tempo
+
+# 9. MFCCs (20 coefficients)
+mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20)
+for i in range(1, 21):
+    features[f'mfcc{i}_mean'] = np.mean(mfccs[i - 1])
+    features[f'mfcc{i}_var'] = np.var(mfccs[i - 1])
+
+# print(features)  # the features match the .csv file correctly
 
 
 
+######## Below is the code to predict the genre of the uploaded .wav file ########
+
+feature_df = pd.DataFrame([features])
+
+# Get the column order from your training data (X before dropping filename and label)
+training_columns = songs.drop(['filename', 'label'], axis=1).columns
+
+feature_df = feature_df[training_columns]  # put into a dataframe and match the training columns
+
+features_scaled = scaler.transform(feature_df)  # scale using same scalar as training
+
+prediction = model.predict(features_scaled)  # predict (which is able to use the best model we train above
+
+genre = le.inverse_transform(prediction)  # this is how we change numerical label back to the genres we know
+
+print(f"Predicted genre: {genre[0]}")
