@@ -49,7 +49,14 @@ the algorithm used by the library for training/fitting the model. If you need he
 information, please reach out to the professor.
 - Code is provided with step by step comments, no functions were written in order to let people go step by step from top
 to bottom and follow the data flow and see how the model works
-- 
+- MLPClassifier uses backpropagation, which takes a set of training data, makes predicts on this data (using what's called
+a forward pass), and after comparing expected results to the actual prediciton, it's able to adjust the weights of the 
+neurons to attempt a greater accuracy (backwards pass). This process continues until the max iterations is hit (1000) or
+the model converges.
+- https://scikit-learn.org/stable/modules/neural_networks_supervised.html
+- http://ufldl.stanford.edu/tutorial/supervised/MultiLayerNeuralNetworks/#backpropagation_algorithm (the section above 
+on neural networks is also very helpful)
+- learning_rate affects the amount the weights are changed during each pass, max_iter is the number of passes allowed
 
 6. What challenges did you encounter in doing this project? Was there trial and error
 required? What did you try that didn’t work very well? What did you need to
@@ -69,6 +76,14 @@ created.) What challenges/limitations (if any) prevented your proof of concept f
 being more successful. Do you have any advice to a future researcher – building on your
 proof of concept – on things they should do or try to improve the system or get better
 results. (E.g., different data, more data, more/different computing hardware)
+- After lots of editing neural network sizes, different scalars, tweaking iterations and other variables, 83% was the 
+most accurate model. 
+- .wav files were uploaded and analyzed and not all were correct, one song in particular was titled "Jazz background 
+music" (file [jazz-412597.wav]) and to the human ear it's clearly a jazz song, but this was predicted to be pop.
+- for the future, a more powerful machine would be needed. 1000 songs is no where near big enough since each genre only
+gets 100 songs to train on. On top of this, each song is split into 30 second clips
+- Right now, a model can be trained in minutes, but if thousands more full songs were utilized it would take multiple
+hours to train
 
 
 8. What is the potential impact of machine learning in the area that you explored? What
@@ -78,4 +93,10 @@ benefit?) Are there any potential risks (e.g., risks to user safety or user priv
 society more broadly) or concerns related to the use of machine learning in this area?
 What could future researchers – or society more broadly – do to mitigate these
 risks/concerns?
-
+- due to the low accuracy of 83%, I don't see this model having much of an impact at all, especially after finding out
+most of these models are around 80%
+- A model that's highly accurate and one that expanded to more than 10 genres would possibly make playlist creation 
+much easier for people using music apps. Custom playlists that fit different moods/genres can be made instantly with 
+a model similar to this one, the only risk is there's potential for songs to seem similar according to their data, but
+when actually listening we can see that it's not the case. This is very common with Apple music, where suggested songs
+that are meant to be similar are actually not, but maybe a machine learning model would be able to improve this feature.
