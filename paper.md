@@ -3,13 +3,11 @@
 - This will solve the problem of not knowing what playlist you can add a song to by letting a neural network classify
 them by genre
 
-
 2. What data did you use? Did you collect the data yourself (if so how), or if not where did
 you acquire the data?
 - We're using the GTZAN dataset, which is a collection of 1000 songs with 100 songs of each genre
 - there's many places to get this dataset, I got it from https://www.kaggle.com/datasets/andradaolteanu/gtzan-dataset-music-genre-classification?resource=download
 - in addition to this dataset, various website were used to get free .wav files of different genres
-
 
 3. What model did you use, and why did you use this model? Please provide an overview
 of how this model works? (That is, what is this model doing? What are the parameters
@@ -19,8 +17,7 @@ helps you to explain the model.
 - MLPClassifiers work by iteratively training the model and performing partial derivatives during each step in order to 
 categorize tasks. Each input (X value) is a layer (in my case there are 58), then hidden layers are defined to be the "middle"
 neurons. Finally, the last hidden layer feeds into an output layer and calculates the probability for each option, in our
-case there are 10 options for 10 genres. 
-
+case there are 10 options for 10 genres.
 
 4. What type of preprocessing (or cleaning) did you do on the data before training your
 model?
@@ -70,7 +67,6 @@ with different sizes.
 - helpful changes included minor tweaking of how large the two hidden layers are, changing scalars, iterations, and
 learning rate.
 
-
 7. How successful was your proof of concept? (That is, evaluate the final system that you
 created.) What challenges/limitations (if any) prevented your proof of concept from
 being more successful. Do you have any advice to a future researcher – building on your
@@ -84,7 +80,6 @@ music" (file [jazz-412597.wav]) and to the human ear it's clearly a jazz song, b
 gets 100 songs to train on. On top of this, each song is split into 30 second clips
 - Right now, a model can be trained in minutes, but if thousands more full songs were utilized it would take multiple
 hours to train
-
 
 8. What is the potential impact of machine learning in the area that you explored? What
 potential benefits could be created by machine learning systems in the area you
