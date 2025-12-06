@@ -38,7 +38,8 @@ mfcc5_mean,mfcc5_var,mfcc6_mean,mfcc6_var,mfcc7_mean,mfcc7_var,mfcc8_mean,mfcc8_
 mfcc10_var,mfcc11_mean,mfcc11_var,mfcc12_mean,mfcc12_var,mfcc13_mean,mfcc13_var,mfcc14_mean,mfcc14_var,mfcc15_mean,
 mfcc15_var,mfcc16_mean,mfcc16_var,mfcc17_mean,mfcc17_var,mfcc18_mean,mfcc18_var,mfcc19_mean,mfcc19_var,mfcc20_mean,
 mfcc20_var,label
-- when uploading a .wav file, it gets processed to fill this data 
+- when uploading a .wav file, it gets processed to fill this data above, and gets put into a Pandas DataFrame so it 
+can match the training/testing data
 
 5. Provide an overview (either in English or pseudocode) of the algorithm that is used to
 train your model. (That is, to fit the model to your data). I expect that you are using a
@@ -46,7 +47,9 @@ library instead of implementing the algorithm on your own. (You are welcome to u
 library, but indicate in the paper what library you used.) You should be able to research
 the algorithm used by the library for training/fitting the model. If you need help finding
 information, please reach out to the professor.
-
+- Code is provided with step by step comments, no functions were written in order to let people go step by step from top
+to bottom and follow the data flow and see how the model works
+- 
 
 6. What challenges did you encounter in doing this project? Was there trial and error
 required? What did you try that didn’t work very well? What did you need to
